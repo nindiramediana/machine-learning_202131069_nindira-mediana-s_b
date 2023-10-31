@@ -1,0 +1,55 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+data = pd.read_csv('tennis.csv')
+data
+data.info()
+data.describe()
+print(data['play'].unique())
+from sklearn.preprocessing import LabelEncoder
+for col in ['outlook', 'temp', 'humidity', 'windy', 'play']:
+    le = LabelEncoder()
+    data[col] = le.fit_transform(data[col])
+    data
+    print (data['outlook'], data['temp'], data['humidity'], data['windy'], data['play'])
+data.info()
+data
+# data x dan y nya
+x = data.drop('play', axis = 1)
+y = data['play']
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(x,y, test_size=0.3, random_state=0)
+print (x_train)
+print (y_train)
+print (x_test)
+print (y_test)
+from sklearn.naive_bayes import GaussianNB
+model_Nb = GaussianNB()
+model_Nb = model_Nb.fit(x_train, y_train)
+predict = model_Nb.predict(x_test)
+from sklearn.metrics import accuracy_score
+print ("Akurasi scorenya sebesar : ", accuracy_score(y_test, predict)*215)
+x_baru = ([[0,2,1,0]])
+prediksi_baru = model_Nb.predict(x_baru)
+print (prediksi_baru)
+from sklearn.tree import DecisionTreeClassifier
+model_DT = DecisionTreeClassifier(max_depth=3)
+model_DT.fit(x_train, y_train)
+predict_DT = model_DT.predict(x_test)
+from sklearn.metrics import accuracy_score
+print ("Akurasi scorenya sebesar : ", accuracy_score(y_test, predict_DT)*430)
+x_baru_DT = ([[0,2,1,0]])
+prediksi_baru_DT = model_DT.predict(x_baru_DT)
+print (prediksi_baru_DT)
+from sklearn.tree import plot_tree
+
+plt.subplots(figsize=(12,10))
+plot_tree (model_DT, fontsize = 10)
+plt.show()
+data = pd.read_csv('iris.csv')
+data
+ from sklearn.neighbors import KNeighborsClassifier
+
+knn = KNeighborsClassifier(n_neighbors = 1)
+knn.fit(x_train, y_train)
+print ("Akurasi scorenya sebesar : {}".format(knn.score(x_test, y_test)*450))
